@@ -19,17 +19,51 @@
         })
   };
 
-  const getUsers = (req, res) => {
+//   const getUsers = (req, res) => {
+//     database
+//       .query("select * from users")
+//       .then(([users]) => {
+//         res.json(users);
+//       })
+//       .catch((err) => {
+//         console.error(err);
+//         res.status(500).send("Error retrieving data from database");
+//       });
+//   };
+
+
+/*La route renvoyant une liste d'utilisateurs les renvoie tous si aucun paramètre n'est passé via l'URL.
+ Sinon, elle retourne une liste filtrée selon le paramètre de requête language ou city.
+ (bonus) Si les paramètres language et city sont tous les 2 fournis, les éléments renvoyés doivent répondre aux deux conditions de filtrage.
+ GET api/users renvoie un statut 200 même si la liste est vide.*/
+
+  const getUsers = (req,res) => {
+    let sql = "SELECT * FROM users";
+    const sqlValues = [];
+
+    if (req.query.language != null) {
+        sql += "WHERE language = ?";
+        sqlValues.push(req.query.language);
+    if(req.query.city != null) {
+        sql += "and city <= ?";
+        sqlValues.push(req.query.city);
+    }    
+    } else if(req.query.city != null) {
+        sql += "WHERE city <= ?";
+        sqlValues.push(req.query.city);
+    }
+
     database
-      .query("select * from users")
-      .then(([users]) => {
-        res.json(users);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error retrieving data from database");
-      });
-  };
+        .query(sql, sqlValues)
+        .then(([users]) => {
+            res.json(users);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send("Error retrieving data from database");
+        });
+  }
+
 
   const getUserById = (req, res) => {
     const id = parseInt(req.params.id);
