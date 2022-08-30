@@ -14,9 +14,10 @@ const welcome = (req, res) => {
 };
 
 const movieHandlers = require("./movieHandlers");
-const userHandlers = require("./userHandlers");
 const { validateMovie } = require("./validators.js");
-const { validateUser } = require("./validateUser.js");
+
+const userHandlers = require("./userHandlers");
+const { validateUser } = require("./validators.js");
 
 //GET Movies
 
@@ -30,24 +31,30 @@ app.post("/api/movies", movieHandlers.postMovie);
 //POST ValidateMovie
 app.post("/api/movies", validateMovie, movieHandlers.postMovie);
 
-//POST validateUser
-app.post("/api/users", validateUser, userHandlers.postUser)
-
 //PUT Movies
 app.put("/api/movies/:id", movieHandlers.updateMovie);
+app.put("/api/movies/:id",validateMovie, movieHandlers.updateMovie);
 
 //DELETE Movies
 app.delete("/api/movies/:id", movieHandlers.deleteMovie);
 
+
 //GET Users
 app.get("/api/users", userHandlers.getUsers);
 app.get("/api/users/:id", userHandlers.getUserById);
+
+
+//POST validateUser
+app.post("/api/users", validateUser, userHandlers.postUser)
+app.post("/api/users", validateUser, userHandlers.postUser);
+
 
 //POST Users
 app.post("/api/users", userHandlers.postUser);
 
 //PUT Users
 app.put("/api/users/:id", userHandlers.updateUser);
+app.put("/api/users/:id",validateUser, userHandlers.updateUser); //...
 
 //DELETE Users
 app.delete("/api/users/:id", userHandlers.deleteUser);
