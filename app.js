@@ -15,6 +15,8 @@ const welcome = (req, res) => {
 
 const movieHandlers = require("./movieHandlers");
 const userHandlers = require("./userHandlers");
+const { validateMovie } = require("./validators.js");
+const { validateUser } = require("./validateUser.js");
 
 //GET Movies
 
@@ -24,6 +26,12 @@ app.get("/api/movies/:id", movieHandlers.getMovieById);
 
 //POST Movies
 app.post("/api/movies", movieHandlers.postMovie);
+
+//POST ValidateMovie
+app.post("/api/movies", validateMovie, movieHandlers.postMovie);
+
+//POST validateUser
+app.post("/api/users", validateUser, userHandlers.postUser)
 
 //PUT Movies
 app.put("/api/movies/:id", movieHandlers.updateMovie);
