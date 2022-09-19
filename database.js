@@ -31,7 +31,7 @@ database
 database
   .query("select * from movies")
   .then(([movies]) => {
-    console.log(movies);
+    console.log("");
   })
   .catch((err) => {
     console.error(err);
