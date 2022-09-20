@@ -96,10 +96,27 @@ const movies = [
       });
   };
 
+  const deleteMovie = (req, res) => {
+    models.movies
+      .delete(req.params.id)
+      .then(([result]) => {
+        if (result.affectedRows === 0) {
+          res.sendStatus(404);
+        } else {
+          res.sendStatus(204);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        res.sendStatus(500);
+      });
+  };
+
     
   module.exports = {
     getMovies,
     getMovieById,
     postMovie, //don't forget to export your function ;)
     updateMovie, //don't forget to export your function;)
+    deleteMovie,
   };
