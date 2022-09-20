@@ -24,9 +24,9 @@ const isItDwight = (req, res) => {
 
 const userHandlers = require("./userHandlers");
 const { hashPassword, verifyPassword, verifyToken } = require("./auth"); //express07 et 08 //
-// const userHandler = require("./userHandlers"); // express 08 //
 const movieHandlers = require("./movieHandlers");
 
+//public routes
 app.get("/api/users", userHandlers.getUsers);
 app.get("/api/users/:id", userHandlers.getUserById);
 
@@ -34,22 +34,25 @@ app.get("/", welcome);
 app.get("/api/movies", movieHandlers.getMovies);
 app.get("/api/movies/:id", movieHandlers.getMovieById);
 
+// login 
 app.post("/api/login", userHandlers.getUserByEmailWithPasswordAndPassToNext,
   verifyPassword
 ); // express 08 //
 
+//wall token proteges toutes les routes ci dessous
 app.use(verifyToken); // authentication wall : verifyToken is activated for each route after this line
 
+//protected routes USERS
 app.post("/api/users", hashPassword, userHandlers.postUser); // express 07 //
 app.put("/api/users/:id", userHandlers.updateUser);
 app.delete("/api/:id", userHandlers.deleteUser);
 
-app.post("/api/movies", verifyToken, movieHandlers.postMovie);
-app.post("/api/movies", verifyToken, movieHandlers.postMovie); //express 08 //
-app.put("/api/movies/:id", verifyToken, movieHandlers.updateMovie);
-app.delete("/api/movies/:id", verifyToken, movieHandlers.deleteMovie);
+// protected routes MOVIES
+app.post("/api/movies", movieHandlers.postMovie);
+app.post("/api/movies", movieHandlers.postMovie); //express 08 //
+app.put("/api/movies/:id", movieHandlers.updateMovie);
+app.delete("/api/movies/:id", movieHandlers.deleteMovie);
 
-// app.post("/api/users", userHandlers.postUser);
 
 
 

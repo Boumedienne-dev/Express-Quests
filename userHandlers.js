@@ -1,5 +1,12 @@
   const database = require("./database");
 
+  /*
+On avait ça 
+const initialSql = "select * from users"
+et on a changé la cont pour que les mots de passe ne reviennent dans le GET
+Idem dans le const getUsersById
+*/
+
   const getUsers = (req, res) => {
     database
       .query("select firstname, lastname, email, city, language from users")
